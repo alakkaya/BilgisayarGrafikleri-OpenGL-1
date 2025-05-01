@@ -33,7 +33,6 @@ float lastFrame = 0.0f;
 // Fonksiyon prototipleri
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void mouse_callback(GLFWwindow* window, double xpos, double ypos);
-void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
 void processInput(GLFWwindow* window);
 unsigned int loadShader(const char* vertexPath, const char* fragmentPath);
 unsigned int createCube();
@@ -121,7 +120,6 @@ int main() {
     glfwMakeContextCurrent(window);
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
     glfwSetCursorPosCallback(window, mouse_callback);
-    glfwSetScrollCallback(window, scroll_callback);
 
     // Fare yakalama modu
     glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
@@ -653,6 +651,145 @@ int main() {
     glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(float), (void*)(6 * sizeof(float)));
     glEnableVertexAttribArray(2);
 
+    // Kasa (computer case) VAO/VBO
+    float caseVertices[] = {
+        // Top face
+        -0.1f,  0.5f, -0.1f,  0.0f, 1.0f, 0.0f,   0.7f, 0.7f, 0.7f,
+         0.1f,  0.5f, -0.1f,  0.0f, 1.0f, 0.0f,   0.7f, 0.7f, 0.7f,
+         0.1f,  0.5f,  0.1f,  0.0f, 1.0f, 0.0f,   0.7f, 0.7f, 0.7f,
+         0.1f,  0.5f,  0.1f,  0.0f, 1.0f, 0.0f,   0.7f, 0.7f, 0.7f,
+        -0.1f,  0.5f,  0.1f,  0.0f, 1.0f, 0.0f,   0.7f, 0.7f, 0.7f,
+        -0.1f,  0.5f, -0.1f,  0.0f, 1.0f, 0.0f,   0.7f, 0.7f, 0.7f,
+        // Bottom face
+        -0.1f,  0.0f, -0.1f,  0.0f,-1.0f, 0.0f,   0.7f, 0.7f, 0.7f,
+         0.1f,  0.0f, -0.1f,  0.0f,-1.0f, 0.0f,   0.7f, 0.7f, 0.7f,
+         0.1f,  0.0f,  0.1f,  0.0f,-1.0f, 0.0f,   0.7f, 0.7f, 0.7f,
+         0.1f,  0.0f,  0.1f,  0.0f,-1.0f, 0.0f,   0.7f, 0.7f, 0.7f,
+        -0.1f,  0.0f,  0.1f,  0.0f,-1.0f, 0.0f,   0.7f, 0.7f, 0.7f,
+        -0.1f,  0.0f, -0.1f,  0.0f,-1.0f, 0.0f,   0.7f, 0.7f, 0.7f,
+        // Front face
+        -0.1f,  0.0f,  0.1f,  0.0f, 0.0f, 1.0f,   0.7f, 0.7f, 0.7f,
+         0.1f,  0.0f,  0.1f,  0.0f, 0.0f, 1.0f,   0.7f, 0.7f, 0.7f,
+         0.1f,  0.5f,  0.1f,  0.0f, 0.0f, 1.0f,   0.7f, 0.7f, 0.7f,
+         0.1f,  0.5f,  0.1f,  0.0f, 0.0f, 1.0f,   0.7f, 0.7f, 0.7f,
+        -0.1f,  0.5f,  0.1f,  0.0f, 0.0f, 1.0f,   0.7f, 0.7f, 0.7f,
+        -0.1f,  0.0f,  0.1f,  0.0f, 0.0f, 1.0f,   0.7f, 0.7f, 0.7f,
+        // Back face
+        -0.1f,  0.0f, -0.1f,  0.0f, 0.0f,-1.0f,   0.7f, 0.7f, 0.7f,
+         0.1f,  0.0f, -0.1f,  0.0f, 0.0f,-1.0f,   0.7f, 0.7f, 0.7f,
+         0.1f,  0.5f, -0.1f,  0.0f, 0.0f,-1.0f,   0.7f, 0.7f, 0.7f,
+         0.1f,  0.5f, -0.1f,  0.0f, 0.0f,-1.0f,   0.7f, 0.7f, 0.7f,
+        -0.1f,  0.5f, -0.1f,  0.0f, 0.0f,-1.0f,   0.7f, 0.7f, 0.7f,
+        -0.1f,  0.0f, -0.1f,  0.0f, 0.0f,-1.0f,   0.7f, 0.7f, 0.7f,
+        // Left face
+        -0.1f,  0.0f, -0.1f, -1.0f, 0.0f, 0.0f,   0.7f, 0.7f, 0.7f,
+        -0.1f,  0.0f,  0.1f, -1.0f, 0.0f, 0.0f,   0.7f, 0.7f, 0.7f,
+        -0.1f,  0.5f,  0.1f, -1.0f, 0.0f, 0.0f,   0.7f, 0.7f, 0.7f,
+        -0.1f,  0.5f,  0.1f, -1.0f, 0.0f, 0.0f,   0.7f, 0.7f, 0.7f,
+        -0.1f,  0.5f, -0.1f, -1.0f, 0.0f, 0.0f,   0.7f, 0.7f, 0.7f,
+        -0.1f,  0.0f, -0.1f, -1.0f, 0.0f, 0.0f,   0.7f, 0.7f, 0.7f,
+        // Right face
+         0.1f,  0.0f, -0.1f,  1.0f, 0.0f, 0.0f,   0.7f, 0.7f, 0.7f,
+         0.1f,  0.0f,  0.1f,  1.0f, 0.0f, 0.0f,   0.7f, 0.7f, 0.7f,
+         0.1f,  0.5f,  0.1f,  1.0f, 0.0f, 0.0f,   0.7f, 0.7f, 0.7f,
+         0.1f,  0.5f,  0.1f,  1.0f, 0.0f, 0.0f,   0.7f, 0.7f, 0.7f,
+         0.1f,  0.5f, -0.1f,  1.0f, 0.0f, 0.0f,   0.7f, 0.7f, 0.7f,
+         0.1f,  0.0f, -0.1f,  1.0f, 0.0f, 0.0f,   0.7f, 0.7f, 0.7f
+    };
+    unsigned int caseVAO, caseVBO;
+    glGenVertexArrays(1, &caseVAO);
+    glGenBuffers(1, &caseVBO);
+    glBindVertexArray(caseVAO);
+    glBindBuffer(GL_ARRAY_BUFFER, caseVBO);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(caseVertices), caseVertices, GL_STATIC_DRAW);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(float), (void*)0);
+    glEnableVertexAttribArray(0);
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(float), (void*)(3 * sizeof(float)));
+    glEnableVertexAttribArray(1);
+    glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(float), (void*)(6 * sizeof(float)));
+    glEnableVertexAttribArray(2);
+
+    // Yatak (bed) VAO/VBO
+    float bedVertices[] = {
+        // Top face
+        -0.5f,  0.1f, -0.5f,  0.0f, 1.0f, 0.0f,   0.8f, 0.8f, 0.8f,
+         0.5f,  0.1f, -0.5f,  0.0f, 1.0f, 0.0f,   0.8f, 0.8f, 0.8f,
+         0.5f,  0.1f,  0.5f,  0.0f, 1.0f, 0.0f,   0.8f, 0.8f, 0.8f,
+         0.5f,  0.1f,  0.5f,  0.0f, 1.0f, 0.0f,   0.8f, 0.8f, 0.8f,
+        -0.5f,  0.1f,  0.5f,  0.0f, 1.0f, 0.0f,   0.8f, 0.8f, 0.8f,
+        -0.5f,  0.1f, -0.5f,  0.0f, 1.0f, 0.0f,   0.8f, 0.8f, 0.8f,
+        // Bottom face
+        -0.5f,  0.0f, -0.5f,  0.0f,-1.0f, 0.0f,   0.8f, 0.8f, 0.8f,
+         0.5f,  0.0f, -0.5f,  0.0f,-1.0f, 0.0f,   0.8f, 0.8f, 0.8f,
+         0.5f,  0.0f,  0.5f,  0.0f,-1.0f, 0.0f,   0.8f, 0.8f, 0.8f,
+         0.5f,  0.0f,  0.5f,  0.0f,-1.0f, 0.0f,   0.8f, 0.8f, 0.8f,
+        -0.5f,  0.0f,  0.5f,  0.0f,-1.0f, 0.0f,   0.8f, 0.8f, 0.8f,
+        -0.5f,  0.0f, -0.5f,  0.0f,-1.0f, 0.0f,   0.8f, 0.8f, 0.8f,
+        // Front face
+        -0.5f,  0.0f,  0.5f,  0.0f, 0.0f, 1.0f,   0.8f, 0.8f, 0.8f,
+         0.5f,  0.0f,  0.5f,  0.0f, 0.0f, 1.0f,   0.8f, 0.8f, 0.8f,
+         0.5f,  0.1f,  0.5f,  0.0f, 0.0f, 1.0f,   0.8f, 0.8f, 0.8f,
+         0.5f,  0.1f,  0.5f,  0.0f, 0.0f, 1.0f,   0.8f, 0.8f, 0.8f,
+        -0.5f,  0.1f,  0.5f,  0.0f, 0.0f, 1.0f,   0.8f, 0.8f, 0.8f,
+        -0.5f,  0.0f,  0.5f,  0.0f, 0.0f, 1.0f,   0.8f, 0.8f, 0.8f,
+        // Back face
+        -0.5f,  0.0f, -0.5f,  0.0f, 0.0f,-1.0f,   0.8f, 0.8f, 0.8f,
+         0.5f,  0.0f, -0.5f,  0.0f, 0.0f,-1.0f,   0.8f, 0.8f, 0.8f,
+         0.5f,  0.1f, -0.5f,  0.0f, 0.0f,-1.0f,   0.8f, 0.8f, 0.8f,
+         0.5f,  0.1f, -0.5f,  0.0f, 0.0f,-1.0f,   0.8f, 0.8f, 0.8f,
+        -0.5f,  0.1f, -0.5f,  0.0f, 0.0f,-1.0f,   0.8f, 0.8f, 0.8f,
+        -0.5f,  0.0f, -0.5f,  0.0f, 0.0f,-1.0f,   0.8f, 0.8f, 0.8f,
+        // Left face
+        -0.5f,  0.0f, -0.5f, -1.0f, 0.0f, 0.0f,   0.8f, 0.8f, 0.8f,
+        -0.5f,  0.0f,  0.5f, -1.0f, 0.0f, 0.0f,   0.8f, 0.8f, 0.8f,
+        -0.5f,  0.1f,  0.5f, -1.0f, 0.0f, 0.0f,   0.8f, 0.8f, 0.8f,
+        -0.5f,  0.1f,  0.5f, -1.0f, 0.0f, 0.0f,   0.8f, 0.8f, 0.8f,
+        -0.5f,  0.1f, -0.5f, -1.0f, 0.0f, 0.0f,   0.8f, 0.8f, 0.8f,
+        -0.5f,  0.0f, -0.5f, -1.0f, 0.0f, 0.0f,   0.8f, 0.8f, 0.8f,
+        // Right face
+         0.5f,  0.0f, -0.5f,  1.0f, 0.0f, 0.0f,   0.8f, 0.8f, 0.8f,
+         0.5f,  0.0f,  0.5f,  1.0f, 0.0f, 0.0f,   0.8f, 0.8f, 0.8f,
+         0.5f,  0.1f,  0.5f,  1.0f, 0.0f, 0.0f,   0.8f, 0.8f, 0.8f,
+         0.5f,  0.1f,  0.5f,  1.0f, 0.0f, 0.0f,   0.8f, 0.8f, 0.8f,
+         0.5f,  0.1f, -0.5f,  1.0f, 0.0f, 0.0f,   0.8f, 0.8f, 0.8f,
+         0.5f,  0.0f, -0.5f,  1.0f, 0.0f, 0.0f,   0.8f, 0.8f, 0.8f
+    };
+    unsigned int bedVAO, bedVBO;
+    glGenVertexArrays(1, &bedVAO);
+    glGenBuffers(1, &bedVBO);
+    glBindVertexArray(bedVAO);
+    glBindBuffer(GL_ARRAY_BUFFER, bedVBO);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(bedVertices), bedVertices, GL_STATIC_DRAW);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(float), (void*)0);
+    glEnableVertexAttribArray(0);
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(float), (void*)(3 * sizeof(float)));
+    glEnableVertexAttribArray(1);
+    glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(float), (void*)(6 * sizeof(float)));
+    glEnableVertexAttribArray(2);
+
+    // Çarşaf (sheet) VAO/VBO - kırmızı renkte, ince düzlem
+    float sheetVertices[] = {
+        // Tek yüzey (üst) - 6 vertex
+        -0.5f, 0.5f, -0.5f,  0.0f, 1.0f, 0.0f,   0.8f, 0.0f, 0.0f,
+         0.5f, 0.5f, -0.5f,  0.0f, 1.0f, 0.0f,   0.8f, 0.0f, 0.0f,
+         0.5f, 0.5f,  0.5f,  0.0f, 1.0f, 0.0f,   0.8f, 0.0f, 0.0f,
+         0.5f, 0.5f,  0.5f,  0.0f, 1.0f, 0.0f,   0.8f, 0.0f, 0.0f,
+        -0.5f, 0.5f,  0.5f,  0.0f, 1.0f, 0.0f,   0.8f, 0.0f, 0.0f,
+        -0.5f, 0.5f, -0.5f,  0.0f, 1.0f, 0.0f,   0.8f, 0.0f, 0.0f
+    };
+    unsigned int sheetVAO, sheetVBO;
+    glGenVertexArrays(1, &sheetVAO);
+    glGenBuffers(1, &sheetVBO);
+    glBindVertexArray(sheetVAO);
+    glBindBuffer(GL_ARRAY_BUFFER, sheetVBO);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(sheetVertices), sheetVertices, GL_STATIC_DRAW);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(float), (void*)0);
+    glEnableVertexAttribArray(0);
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(float), (void*)(3 * sizeof(float)));
+    glEnableVertexAttribArray(1);
+    glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(float), (void*)(6 * sizeof(float)));
+    glEnableVertexAttribArray(2);
+
     // Ana döngü
     while (!glfwWindowShouldClose(window)) {
         // Zaman hesaplaması
@@ -736,12 +873,40 @@ int main() {
         glBindVertexArray(keyboardVAO);
         glDrawArrays(GL_TRIANGLES, 0, 36);
 
+        // Kasa (computer case)
+        model = glm::mat4(1.0f);
+        model = glm::translate(model, glm::vec3(1.0f, -0.2f, 0.2f)); // öne taşı
+        model = glm::scale(model, glm::vec3(1.0f, 1.1f, 1.5f));    // yandan daha uzun
+        glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "model"), 1, GL_FALSE, glm::value_ptr(model));
+        glBindVertexArray(caseVAO);
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+
         // Kitaplar - 3 tane kitap için tüm vertex verisini çiz (6 üçgen x 6 yüz x 3 kitap = 108 üçgen)
         model = glm::mat4(1.0f);
         model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f));
         glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "model"), 1, GL_FALSE, glm::value_ptr(model));
         glBindVertexArray(bookVAO);
         glDrawArrays(GL_TRIANGLES, 0, 108); // 108 vertex (3 kitap, her kitap 6 yüz * 6 vertex)
+
+        // Yatak (bed)
+        model = glm::mat4(1.0f);
+        // Position bed in front of desk outside its footprint to avoid occlusion
+        model = glm::translate(model, glm::vec3(2.5f, -0.8f, 2.7f));
+        model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+        model = glm::scale(model, glm::vec3(2.5f, 5.0f, 1.5f));       // Increased bed thickness
+        glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "model"), 1, GL_FALSE, glm::value_ptr(model));
+        glBindVertexArray(bedVAO);
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+
+        // Çarşaf (sheet)
+        model = glm::mat4(1.0f);
+        // Aynı yerleşim, biraz yukarıda
+        model = glm::translate(model, glm::vec3(2.5f, -0.788f, 2.7f));
+        model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+        model = glm::scale(model, glm::vec3(2.5f, 1.0f, 1.5f));
+        glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "model"), 1, GL_FALSE, glm::value_ptr(model));
+        glBindVertexArray(sheetVAO);
+        glDrawArrays(GL_TRIANGLES, 0, 6);
 
         // Buffers
         glfwSwapBuffers(window);
@@ -755,12 +920,18 @@ int main() {
     glDeleteVertexArrays(1, &mouseVAO);
     glDeleteVertexArrays(1, &keyboardVAO);
     glDeleteVertexArrays(1, &bookVAO);
+    glDeleteVertexArrays(1, &caseVAO);
+    glDeleteVertexArrays(1, &bedVAO);
+    glDeleteVertexArrays(1, &sheetVAO);
     glDeleteBuffers(1, &deskVBO);
     glDeleteBuffers(1, &legVBO);
     glDeleteBuffers(1, &monitorVBO);
     glDeleteBuffers(1, &mouseVBO);
     glDeleteBuffers(1, &keyboardVBO);
     glDeleteBuffers(1, &bookVBO);
+    glDeleteBuffers(1, &caseVBO);
+    glDeleteBuffers(1, &bedVBO);
+    glDeleteBuffers(1, &sheetVBO);
     
     glDeleteProgram(shaderProgram);
 
@@ -807,10 +978,6 @@ void mouse_callback(GLFWwindow* window, double xpos, double ypos) {
     cameraFront = glm::normalize(direction);
 }
 
-// Fare tekerleği
-void scroll_callback(GLFWwindow* window, double xoffset, double yoffset) {
-    // İsteğe bağlı yakınlaştırma/uzaklaştırma olabilir
-}
 
 // Klavye girişi
 void processInput(GLFWwindow* window) {
