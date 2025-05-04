@@ -8,8 +8,8 @@
 #include <vector>
 
 // Pencere boyutları
-const unsigned int SCR_WIDTH = 800;
-const unsigned int SCR_HEIGHT = 600;
+const unsigned int SCR_WIDTH = 1700;
+const unsigned int SCR_HEIGHT = 900;
 
 // Kamera ayarları
 glm::vec3 cameraPos = glm::vec3(0.0f, 1.0f, 8.0f);
