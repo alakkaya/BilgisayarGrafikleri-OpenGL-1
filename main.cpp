@@ -846,6 +846,54 @@ float lampVertices[] = {
     glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(float), (void *)(6 * sizeof(float)));
     glEnableVertexAttribArray(2);
 
+    // Piramit için vertex verileri
+    float pyramidVertices[] = {
+        // Taban (2 üçgen)
+        2.5f, -1.0f, -1.0f,  0.0f, -1.0f, 0.0f,  0.7f, 0.4f, 0.2f,
+        1.5f, -1.0f, -1.0f,  0.0f, -1.0f, 0.0f,  0.7f, 0.4f, 0.2f,
+        1.5f, -1.0f, 0.0f,   0.0f, -1.0f, 0.0f,  0.7f, 0.4f, 0.2f,
+        
+        2.5f, -1.0f, -1.0f,  0.0f, -1.0f, 0.0f,  0.7f, 0.4f, 0.2f,
+        1.5f, -1.0f, 0.0f,   0.0f, -1.0f, 0.0f,  0.7f, 0.4f, 0.2f,
+        2.5f, -1.0f, 0.0f,   0.0f, -1.0f, 0.0f,  0.7f, 0.4f, 0.2f,
+        
+        // Ön yüz
+        2.0f, 0.5f, -0.5f,   0.0f, 0.5f, 1.0f,   0.8f, 0.5f, 0.3f,
+        2.5f, -1.0f, 0.0f,   0.0f, 0.5f, 1.0f,   0.8f, 0.5f, 0.3f,
+        1.5f, -1.0f, 0.0f,   0.0f, 0.5f, 1.0f,   0.8f, 0.5f, 0.3f,
+        
+        // Sağ yüz
+        2.0f, 0.5f, -0.5f,   1.0f, 0.5f, 0.0f,   0.7f, 0.4f, 0.2f,
+        2.5f, -1.0f, -1.0f,  1.0f, 0.5f, 0.0f,   0.7f, 0.4f, 0.2f,
+        2.5f, -1.0f, 0.0f,   1.0f, 0.5f, 0.0f,   0.7f, 0.4f, 0.2f,
+        
+        // Sol yüz
+        2.0f, 0.5f, -0.5f,   -1.0f, 0.5f, 0.0f,  0.8f, 0.5f, 0.3f,
+        1.5f, -1.0f, 0.0f,   -1.0f, 0.5f, 0.0f,  0.8f, 0.5f, 0.3f,
+        1.5f, -1.0f, -1.0f,  -1.0f, 0.5f, 0.0f,  0.8f, 0.5f, 0.3f,
+        
+        // Arka yüz
+        2.0f, 0.5f, -0.5f,   0.0f, 0.5f, -1.0f,  0.7f, 0.4f, 0.2f,
+        1.5f, -1.0f, -1.0f,  0.0f, 0.5f, -1.0f,  0.7f, 0.4f, 0.2f,
+        2.5f, -1.0f, -1.0f,  0.0f, 0.5f, -1.0f,  0.7f, 0.4f, 0.2f
+    };
+
+// Piramit VAO/VBO oluştur
+unsigned int pyramidVAO, pyramidVBO;
+glGenVertexArrays(1, &pyramidVAO);
+glGenBuffers(1, &pyramidVBO);
+
+glBindVertexArray(pyramidVAO);
+glBindBuffer(GL_ARRAY_BUFFER, pyramidVBO);
+glBufferData(GL_ARRAY_BUFFER, sizeof(pyramidVertices), pyramidVertices, GL_STATIC_DRAW);
+
+glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(float), (void*)0);
+glEnableVertexAttribArray(0);
+glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(float), (void*)(3 * sizeof(float)));
+glEnableVertexAttribArray(1);
+glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(float), (void*)(6 * sizeof(float)));
+glEnableVertexAttribArray(2);
+
     // Oda tabanı (floor)
     float floorVertices[] = {
         -2.5f, -1.0f, -1.5f, 0.0f, 1.0f, 0.0f, 0.8f, 0.8f, 0.8f,
@@ -1081,7 +1129,13 @@ float lampVertices[] = {
         glDrawArrays(GL_TRIANGLE_FAN, 10, 10);    // Koni yüzeyi için
         glDrawArrays(GL_TRIANGLES, 20, 6); 
 
-
+        //Piramit
+        model = glm::mat4(1.0f);
+        model = glm::translate(model, glm::vec3(-0.f, 0.0f, -0.2f)); // Sağ arka köşeye taşı
+        model = glm::scale(model, glm::vec3(1.2f, 1.0f, 1.0f)); // Boyutlandır
+        glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "model"), 1, GL_FALSE, glm::value_ptr(model));
+        glBindVertexArray(pyramidVAO);
+        glDrawArrays(GL_TRIANGLES, 0, 18); // 6 üçgen (taban için 2 + 4 yan yüz)
         // Buffers
         glfwSwapBuffers(window);
         glfwPollEvents();
@@ -1102,6 +1156,8 @@ float lampVertices[] = {
     glDeleteVertexArrays(1, &rightWallVAO);
     glDeleteVertexArrays(1, &backWallVAO);
     glDeleteVertexArrays(1, &lampVAO);
+    glDeleteVertexArrays(1, &pyramidVAO);
+    glDeleteBuffers(1, &pyramidVBO);
     glDeleteBuffers(1, &deskVBO);
     glDeleteBuffers(1, &legVBO);
     glDeleteBuffers(1, &monitorVBO);
