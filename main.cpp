@@ -240,38 +240,40 @@ int main()
     };
 
     // Ampul modeli için vertex verileri
-float lampVertices[] = {
-    // Koni şeklindeki cam kısım
-    // Taban çemberi (8 nokta kullanarak yaklaşık bir çember)
-    0.0f, 0.0f, 0.0f,    0.0f, -1.0f, 0.0f,   1.0f, 1.0f, 0.8f, // Merkez
-    0.1f, 0.0f, 0.0f,    0.0f, -1.0f, 0.0f,   1.0f, 1.0f, 0.8f,
-    0.07f, 0.0f, 0.07f,  0.0f, -1.0f, 0.0f,   1.0f, 1.0f, 0.8f,
-    0.0f, 0.0f, 0.1f,    0.0f, -1.0f, 0.0f,   1.0f, 1.0f, 0.8f,
-    -0.07f, 0.0f, 0.07f, 0.0f, -1.0f, 0.0f,   1.0f, 1.0f, 0.8f,
-    -0.1f, 0.0f, 0.0f,   0.0f, -1.0f, 0.0f,   1.0f, 1.0f, 0.8f,
-    -0.07f, 0.0f, -0.07f,0.0f, -1.0f, 0.0f,   1.0f, 1.0f, 0.8f,
-    0.0f, 0.0f, -0.1f,   0.0f, -1.0f, 0.0f,   1.0f, 1.0f, 0.8f,
-    0.07f, 0.0f, -0.07f, 0.0f, -1.0f, 0.0f,   1.0f, 1.0f, 0.8f,
+    float lampVertices[] = {
+        // Taban çemberi (8 nokta kullanarak yaklaşık bir çember)
+        // positions               // normals             // colors
+        0.0f, 0.0f, 0.0f,        0.0f, -1.0f, 0.0f,    1.0f, 1.0f, 0.8f,  // Merkez
+        0.1f, 0.0f, 0.0f,        0.0f, -1.0f, 0.0f,    1.0f, 1.0f, 0.8f,
+        0.07f, 0.0f, 0.07f,      0.0f, -1.0f, 0.0f,    1.0f, 1.0f, 0.8f,
+        0.0f, 0.0f, 0.1f,        0.0f, -1.0f, 0.0f,    1.0f, 1.0f, 0.8f,
+        -0.07f, 0.0f, 0.07f,     0.0f, -1.0f, 0.0f,    1.0f, 1.0f, 0.8f,
+        -0.1f, 0.0f, 0.0f,       0.0f, -1.0f, 0.0f,    1.0f, 1.0f, 0.8f,
+        -0.07f, 0.0f, -0.07f,    0.0f, -1.0f, 0.0f,    1.0f, 1.0f, 0.8f,
+        0.0f, 0.0f, -0.1f,       0.0f, -1.0f, 0.0f,    1.0f, 1.0f, 0.8f,
+        0.07f, 0.0f, -0.07f,     0.0f, -1.0f, 0.0f,    1.0f, 1.0f, 0.8f,
+        0.1f, 0.0f, 0.0f,        0.0f, -1.0f, 0.0f,    1.0f, 1.0f, 0.8f,  // Çemberi kapatmak için tekrar
+        
+        // Koni yüzeyi
+        0.0f, 0.2f, 0.0f,        0.0f, 1.0f, 0.0f,     1.0f, 1.0f, 0.8f,  // Tepe nokta
+        0.1f, 0.0f, 0.0f,        0.5f, 0.5f, 0.0f,     1.0f, 1.0f, 0.8f,
+        0.07f, 0.0f, 0.07f,      0.35f, 0.5f, 0.35f,   1.0f, 1.0f, 0.8f,
+        0.0f, 0.0f, 0.1f,        0.0f, 0.5f, 0.5f,     1.0f, 1.0f, 0.8f,
+        -0.07f, 0.0f, 0.07f,     -0.35f, 0.5f, 0.35f,  1.0f, 1.0f, 0.8f,
+        -0.1f, 0.0f, 0.0f,       -0.5f, 0.5f, 0.0f,    1.0f, 1.0f, 0.8f,
+        -0.07f, 0.0f, -0.07f,    -0.35f, 0.5f, -0.35f, 1.0f, 1.0f, 0.8f,
+        0.0f, 0.0f, -0.1f,       0.0f, 0.5f, -0.5f,    1.0f, 1.0f, 0.8f,
+        0.07f, 0.0f, -0.07f,     0.35f, 0.5f, -0.35f,  1.0f, 1.0f, 0.8f,
+        0.1f, 0.0f, 0.0f,        0.5f, 0.5f, 0.0f,     1.0f, 1.0f, 0.8f,  // Çemberi kapatmak için tekrar
     
-    // Koni yüzeyi (her çember noktasından tepeye)
-    0.0f, 0.2f, 0.0f,    0.1f, 0.5f, 0.0f,    1.0f, 1.0f, 0.8f, // Tepe
-    0.1f, 0.0f, 0.0f,    0.1f, 0.5f, 0.0f,    1.0f, 1.0f, 0.8f,
-    0.07f, 0.0f, 0.07f,  0.07f, 0.5f, 0.07f,  1.0f, 1.0f, 0.8f,
-    0.0f, 0.0f, 0.1f,    0.0f, 0.5f, 0.1f,    1.0f, 1.0f, 0.8f,
-    -0.07f, 0.0f, 0.07f, -0.07f, 0.5f, 0.07f, 1.0f, 1.0f, 0.8f,
-    -0.1f, 0.0f, 0.0f,   -0.1f, 0.5f, 0.0f,   1.0f, 1.0f, 0.8f,
-    -0.07f, 0.0f, -0.07f,-0.07f, 0.5f, -0.07f,1.0f, 1.0f, 0.8f,
-    0.0f, 0.0f, -0.1f,   0.0f, 0.5f, -0.1f,   1.0f, 1.0f, 0.8f,
-    0.07f, 0.0f, -0.07f, 0.07f, 0.5f, -0.07f, 1.0f, 1.0f, 0.8f,
-
-    // Metal kısım (silindir)
-    0.02f, 0.2f, 0.02f,   0.0f, 1.0f, 0.0f,   0.7f, 0.7f, 0.7f,
-    -0.02f, 0.2f, 0.02f,  0.0f, 1.0f, 0.0f,   0.7f, 0.7f, 0.7f,
-    -0.02f, 0.2f, -0.02f, 0.0f, 1.0f, 0.0f,   0.7f, 0.7f, 0.7f,
-    0.02f, 0.2f, -0.02f,  0.0f, 1.0f, 0.0f,   0.7f, 0.7f, 0.7f,
-    0.02f, 0.3f, 0.02f,   0.0f, 1.0f, 0.0f,   0.7f, 0.7f, 0.7f,
-    -0.02f, 0.3f, 0.02f,  0.0f, 1.0f, 0.0f,   0.7f, 0.7f, 0.7f
-};
+        // Metal kısım (silindir üst yüzeyi)
+        0.02f, 0.2f, 0.02f,      0.0f, 1.0f, 0.0f,     0.7f, 0.7f, 0.7f,
+        -0.02f, 0.2f, 0.02f,     0.0f, 1.0f, 0.0f,     0.7f, 0.7f, 0.7f,
+        -0.02f, 0.2f, -0.02f,    0.0f, 1.0f, 0.0f,     0.7f, 0.7f, 0.7f,
+        0.02f, 0.2f, -0.02f,     0.0f, 1.0f, 0.0f,     0.7f, 0.7f, 0.7f,
+        0.02f, 0.3f, 0.02f,      0.0f, 1.0f, 0.0f,     0.7f, 0.7f, 0.7f,
+        -0.02f, 0.3f, 0.02f,     0.0f, 1.0f, 0.0f,     0.7f, 0.7f, 0.7f
+    };
 
     // Ampul VAO/VBO
     unsigned int lampVAO, lampVBO;
@@ -1120,14 +1122,20 @@ glEnableVertexAttribArray(2);
         glDrawArrays(GL_TRIANGLES, 0, 6);
 
         // Ampulü çiz
-        model = glm::mat4(1.0f);
-        model = glm::translate(model, lightPos);
-        model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));
-        glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "model"), 1, GL_FALSE, glm::value_ptr(model));
-        glBindVertexArray(lampVAO);
-        glDrawArrays(GL_TRIANGLE_FAN, 0, 10);     // Taban çemberi için
-        glDrawArrays(GL_TRIANGLE_FAN, 10, 10);    // Koni yüzeyi için
-        glDrawArrays(GL_TRIANGLES, 20, 6); 
+model = glm::mat4(1.0f);
+model = glm::translate(model, lightPos);
+model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));
+glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "model"), 1, GL_FALSE, glm::value_ptr(model));
+glBindVertexArray(lampVAO);
+
+// Taban çemberi için
+glDrawArrays(GL_TRIANGLE_FAN, 0, 10);
+
+// Koni yüzeyi için
+glDrawArrays(GL_TRIANGLE_FAN, 10, 10);
+
+// Metal kısım için
+glDrawArrays(GL_TRIANGLE_STRIP, 20, 6);
 
         //Piramit
         model = glm::mat4(1.0f);
