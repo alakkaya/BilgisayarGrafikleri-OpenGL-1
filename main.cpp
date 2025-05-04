@@ -919,12 +919,13 @@ glEnableVertexAttribArray(2);
 
     // Sol duvar (left wall)
     float leftWallVertices[] = {
-        -2.5f, -1.0f, 5.0f, 1.0f, 0.0f, 0.0f, 0.6f, 0.3f, 0.1f,
+        -2.5f, -1.0f, -1.5f, 1.0f, 0.0f, 0.0f, 0.6f, 0.3f, 0.1f, // Arka duvar hizasına çekildi
+        -2.5f, 5.0f, -1.5f, 1.0f, 0.0f, 0.0f, 0.6f, 0.3f, 0.1f, // Arka duvar hizasına çekildi
         -2.5f, 5.0f, 5.0f, 1.0f, 0.0f, 0.0f, 0.6f, 0.3f, 0.1f,
-        -2.5f, 5.0f, -5.0f, 1.0f, 0.0f, 0.0f, 0.6f, 0.3f, 0.1f,
-        -2.5f, 5.0f, -5.0f, 1.0f, 0.0f, 0.0f, 0.6f, 0.3f, 0.1f,
-        -2.5f, -1.0f, -5.0f, 1.0f, 0.0f, 0.0f, 0.6f, 0.3f, 0.1f,
-        -2.5f, -1.0f, 5.0f, 1.0f, 0.0f, 0.0f, 0.6f, 0.3f, 0.1f};
+        -2.5f, 5.0f, 5.0f, 1.0f, 0.0f, 0.0f, 0.6f, 0.3f, 0.1f,
+        -2.5f, -1.0f, 5.0f, 1.0f, 0.0f, 0.0f, 0.6f, 0.3f, 0.1f,
+        -2.5f, -1.0f, -1.5f, 1.0f, 0.0f, 0.0f, 0.6f, 0.3f, 0.1f  // Arka duvar hizasına çekildi
+    };
     unsigned int leftWallVAO, leftWallVBO;
     glGenVertexArrays(1, &leftWallVAO);
     glGenBuffers(1, &leftWallVBO);
@@ -940,12 +941,13 @@ glEnableVertexAttribArray(2);
 
     // Sağ duvar (right wall)
     float rightWallVertices[] = {
-        3.0f, -1.0f, -5.0f, -1.0f, 0.0f, 0.0f, 0.6f, 0.3f, 0.1f,
-        3.0f, 5.0f, -5.0f, -1.0f, 0.0f, 0.0f, 0.6f, 0.3f, 0.1f,
+        3.0f, -1.0f, -1.5f, -1.0f, 0.0f, 0.0f, 0.6f, 0.3f, 0.1f, // Arka duvar hizasına çekildi
+        3.0f, 5.0f, -1.5f, -1.0f, 0.0f, 0.0f, 0.6f, 0.3f, 0.1f, // Arka duvar hizasına çekildi
         3.0f, 5.0f, 5.0f, -1.0f, 0.0f, 0.0f, 0.6f, 0.3f, 0.1f,
         3.0f, 5.0f, 5.0f, -1.0f, 0.0f, 0.0f, 0.6f, 0.3f, 0.1f,
         3.0f, -1.0f, 5.0f, -1.0f, 0.0f, 0.0f, 0.6f, 0.3f, 0.1f,
-        3.0f, -1.0f, -5.0f, -1.0f, 0.0f, 0.0f, 0.6f, 0.3f, 0.1f};
+        3.0f, -1.0f, -1.5f, -1.0f, 0.0f, 0.0f, 0.6f, 0.3f, 0.1f  // Arka duvar hizasına çekildi
+    };
     unsigned int rightWallVAO, rightWallVBO;
     glGenVertexArrays(1, &rightWallVAO);
     glGenBuffers(1, &rightWallVBO);
@@ -1139,7 +1141,7 @@ glDrawArrays(GL_TRIANGLE_STRIP, 20, 6);
 
         //Piramit
         model = glm::mat4(1.0f);
-        model = glm::translate(model, glm::vec3(-0.f, 0.0f, -0.2f)); // Sağ arka köşeye taşı
+        model = glm::translate(model, glm::vec3(-0.2f, 0.0f, -0.2f)); // Sağ arka köşeye taşı
         model = glm::scale(model, glm::vec3(1.2f, 1.0f, 1.0f)); // Boyutlandır
         glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "model"), 1, GL_FALSE, glm::value_ptr(model));
         glBindVertexArray(pyramidVAO);
@@ -1248,7 +1250,7 @@ void processInput(GLFWwindow *window)
         cameraPos -= glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
     if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
         cameraPos += glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
-    if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
+    if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
         cameraPos += cameraUp * cameraSpeed;
     if (glfwGetKey(window, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS)
         cameraPos -= cameraUp * cameraSpeed;
