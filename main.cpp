@@ -1015,7 +1015,7 @@ float lampVertices[] = {
 
         // Kasa (computer case)
         model = glm::mat4(1.0f);
-        model = glm::translate(model, glm::vec3(1.0f, -0.2f, 0.2f)); // öne taşı
+        model = glm::translate(model, glm::vec3(1.0f, -0.1f, 0.2f)); // öne taşı
         model = glm::scale(model, glm::vec3(1.0f, 1.1f, 1.5f));      // yandan daha uzun
         glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "model"), 1, GL_FALSE, glm::value_ptr(model));
         glBindVertexArray(caseVAO);
@@ -1030,7 +1030,7 @@ float lampVertices[] = {
 
         // Yatak (bed)
         model = glm::mat4(1.0f);
-        // Yatağı sağ duvara bitişik konumlandır
+        // Yatağı sağ duvara bitişik konumlandırır
         model = glm::translate(model, glm::vec3(2.2f, -1.0f, 2.7f));
         model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
         model = glm::scale(model, glm::vec3(2.5f, 5.0f, 1.5f));
@@ -1175,7 +1175,7 @@ void processInput(GLFWwindow *window)
         return; // ESC tuşuna basıldığında diğer tuşları kontrol etmeyi bırak
     }
 
-    float cameraSpeed = 2.5f * deltaTime;
+    float cameraSpeed = 5.0f * deltaTime;
     if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
         cameraPos += cameraSpeed * cameraFront;
     if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
