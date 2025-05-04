@@ -24,7 +24,7 @@ float lastY = SCR_HEIGHT / 2.0f;
 bool firstMouse = true;
 
 // Işık pozisyonu
-glm::vec3 lightPos(1.2f, 1.0f, 2.0f);
+glm::vec3 lightPos(0.0f, 3.0f, 0.0f); // Işığı tavana taşıdık
 
 // Zaman değişkenleri
 float deltaTime = 0.0f;
@@ -238,6 +238,57 @@ int main()
         -1.5f, -0.1f, -0.8f, -1.0f, 0.0f, 0.0f, 0.50f, 0.25f, 0.06f,
         -1.5f, -0.15f, -0.8f, -1.0f, 0.0f, 0.0f, 0.50f, 0.25f, 0.06f,
     };
+
+    // Ampul modeli için vertex verileri
+float lampVertices[] = {
+    // Koni şeklindeki cam kısım
+    // Taban çemberi (8 nokta kullanarak yaklaşık bir çember)
+    0.0f, 0.0f, 0.0f,    0.0f, -1.0f, 0.0f,   1.0f, 1.0f, 0.8f, // Merkez
+    0.1f, 0.0f, 0.0f,    0.0f, -1.0f, 0.0f,   1.0f, 1.0f, 0.8f,
+    0.07f, 0.0f, 0.07f,  0.0f, -1.0f, 0.0f,   1.0f, 1.0f, 0.8f,
+    0.0f, 0.0f, 0.1f,    0.0f, -1.0f, 0.0f,   1.0f, 1.0f, 0.8f,
+    -0.07f, 0.0f, 0.07f, 0.0f, -1.0f, 0.0f,   1.0f, 1.0f, 0.8f,
+    -0.1f, 0.0f, 0.0f,   0.0f, -1.0f, 0.0f,   1.0f, 1.0f, 0.8f,
+    -0.07f, 0.0f, -0.07f,0.0f, -1.0f, 0.0f,   1.0f, 1.0f, 0.8f,
+    0.0f, 0.0f, -0.1f,   0.0f, -1.0f, 0.0f,   1.0f, 1.0f, 0.8f,
+    0.07f, 0.0f, -0.07f, 0.0f, -1.0f, 0.0f,   1.0f, 1.0f, 0.8f,
+    
+    // Koni yüzeyi (her çember noktasından tepeye)
+    0.0f, 0.2f, 0.0f,    0.1f, 0.5f, 0.0f,    1.0f, 1.0f, 0.8f, // Tepe
+    0.1f, 0.0f, 0.0f,    0.1f, 0.5f, 0.0f,    1.0f, 1.0f, 0.8f,
+    0.07f, 0.0f, 0.07f,  0.07f, 0.5f, 0.07f,  1.0f, 1.0f, 0.8f,
+    0.0f, 0.0f, 0.1f,    0.0f, 0.5f, 0.1f,    1.0f, 1.0f, 0.8f,
+    -0.07f, 0.0f, 0.07f, -0.07f, 0.5f, 0.07f, 1.0f, 1.0f, 0.8f,
+    -0.1f, 0.0f, 0.0f,   -0.1f, 0.5f, 0.0f,   1.0f, 1.0f, 0.8f,
+    -0.07f, 0.0f, -0.07f,-0.07f, 0.5f, -0.07f,1.0f, 1.0f, 0.8f,
+    0.0f, 0.0f, -0.1f,   0.0f, 0.5f, -0.1f,   1.0f, 1.0f, 0.8f,
+    0.07f, 0.0f, -0.07f, 0.07f, 0.5f, -0.07f, 1.0f, 1.0f, 0.8f,
+
+    // Metal kısım (silindir)
+    0.02f, 0.2f, 0.02f,   0.0f, 1.0f, 0.0f,   0.7f, 0.7f, 0.7f,
+    -0.02f, 0.2f, 0.02f,  0.0f, 1.0f, 0.0f,   0.7f, 0.7f, 0.7f,
+    -0.02f, 0.2f, -0.02f, 0.0f, 1.0f, 0.0f,   0.7f, 0.7f, 0.7f,
+    0.02f, 0.2f, -0.02f,  0.0f, 1.0f, 0.0f,   0.7f, 0.7f, 0.7f,
+    0.02f, 0.3f, 0.02f,   0.0f, 1.0f, 0.0f,   0.7f, 0.7f, 0.7f,
+    -0.02f, 0.3f, 0.02f,  0.0f, 1.0f, 0.0f,   0.7f, 0.7f, 0.7f
+};
+
+    // Ampul VAO/VBO
+    unsigned int lampVAO, lampVBO;
+    glGenVertexArrays(1, &lampVAO);
+    glGenBuffers(1, &lampVBO);
+
+    glBindVertexArray(lampVAO);
+    glBindBuffer(GL_ARRAY_BUFFER, lampVBO);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(lampVertices), lampVertices, GL_STATIC_DRAW);
+
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(float), (void*)0);
+    glEnableVertexAttribArray(0);
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(float), (void*)(3 * sizeof(float)));
+    glEnableVertexAttribArray(1);
+    glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(float), (void*)(6 * sizeof(float)));
+    glEnableVertexAttribArray(2);
+
     // Masa ayakları için vertex verileri
     float legVertices[] = {
         // positions          // normals           // colors (dark brown)
@@ -269,6 +320,7 @@ int main()
         0.05f, -0.8f, 0.05f, 1.0f, 0.0f, 0.0f, 0.35f, 0.18f, 0.04f,
         0.05f, 0.0f, 0.05f, 1.0f, 0.0f, 0.0f, 0.35f, 0.18f, 0.04f,
     };
+
     // Monitör için vertex verileri
     float monitorVertices[] = {
         // pozisyonlar          // normallar         // renkler (siyah)
@@ -406,6 +458,7 @@ int main()
             0.25f, -0.09f, -0.35f, 1.0f, 0.0f, 0.0f, 0.12f, 0.12f, 0.12f,
             0.25f, -0.11f, -0.35f, 1.0f, 0.0f, 0.0f, 0.12f, 0.12f, 0.12f,
         };
+
 
     // Kitaplar (üst üste 3 kitap)
     float bookVertices[] = {
@@ -556,6 +609,7 @@ int main()
         -1.0f, -0.01f, 0.5f, 1.0f, 0.0f, 0.0f, 0.1f, 0.65f, 0.3f,
         -1.0f, -0.01f, 0.4f, 1.0f, 0.0f, 0.0f, 0.1f, 0.65f, 0.3f,
         -1.0f, -0.05f, 0.4f, 1.0f, 0.0f, 0.0f, 0.1f, 0.65f, 0.3f};
+
 
     // Masa VAO/VBO
     unsigned int deskVAO, deskVBO;
@@ -1017,6 +1071,17 @@ int main()
         glBindVertexArray(backWallVAO);
         glDrawArrays(GL_TRIANGLES, 0, 6);
 
+        // Ampulü çiz
+        model = glm::mat4(1.0f);
+        model = glm::translate(model, lightPos);
+        model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));
+        glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "model"), 1, GL_FALSE, glm::value_ptr(model));
+        glBindVertexArray(lampVAO);
+        glDrawArrays(GL_TRIANGLE_FAN, 0, 10);     // Taban çemberi için
+        glDrawArrays(GL_TRIANGLE_FAN, 10, 10);    // Koni yüzeyi için
+        glDrawArrays(GL_TRIANGLES, 20, 6); 
+
+
         // Buffers
         glfwSwapBuffers(window);
         glfwPollEvents();
@@ -1036,6 +1101,7 @@ int main()
     glDeleteVertexArrays(1, &leftWallVAO);
     glDeleteVertexArrays(1, &rightWallVAO);
     glDeleteVertexArrays(1, &backWallVAO);
+    glDeleteVertexArrays(1, &lampVAO);
     glDeleteBuffers(1, &deskVBO);
     glDeleteBuffers(1, &legVBO);
     glDeleteBuffers(1, &monitorVBO);
@@ -1049,6 +1115,7 @@ int main()
     glDeleteBuffers(1, &leftWallVBO);
     glDeleteBuffers(1, &rightWallVBO);
     glDeleteBuffers(1, &backWallVBO);
+    glDeleteBuffers(1, &lampVBO);
 
     glDeleteProgram(shaderProgram);
 
