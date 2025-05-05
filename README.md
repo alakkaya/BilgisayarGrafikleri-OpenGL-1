@@ -3,6 +3,7 @@
 Bu sahne, yıllardır yaşadığım ve hayatımın yaklaşık 6 senesini yani odamı temsil ediyor. Masanın üzerinde bir monitör ve hemen yanında bir bilgisayar kasası bulunuyor. Masanın sağ tarafında ise bir yatak yer alıyor. Bu oda, sınavlara hazırlandığım, projeler üzerinde çalıştığım ve hayallerimi şekillendirdiğim bir alanı temsil ediyor. Buradaki her bir nesne, bu odanın bir parçasını ve aslında benim hayat mücadelemi anlatıyor.
 
 ## 📑 Proje Raporu
+Proje raporuna [BG-Rapor1.pdf](./BG-Rapor1.pdf) bağlantısından ulaşabilirsiniz.
 
 ## 🎬 Tanıtım Videosu
 
